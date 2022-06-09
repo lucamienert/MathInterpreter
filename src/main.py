@@ -2,26 +2,25 @@ from interpreter import Interpreter
 from parser import Parser
 from tokenizer import Tokenizer
 
+import sys
+
 def main():
-    while True:
-        try:
-            text = input('> ')
-            if text == 'exit':
-                exit(0)
+    filename = sys.argv[1]
+    if filename.endswith('.lmath'):
+        with open(filename, 'r') as file:
+            data = file.read()
 
-            tokenizer = Tokenizer(text)
-            tokens = tokenizer.generate_tokens()
+    tokenizer = Tokenizer(data)
+    tokens = tokenizer.generate_tokens()
 
-            parser = Parser(tokens)
-            ast = parser.parse()
-            if not ast:
-                continue
+    parser = Parser(tokens)
+    ast = parser.parse()
+    if not ast:
+        raise Exception("Not AST!")
 
-            interpreter = Interpreter()
-            value = interpreter.visit(ast)
-            print(value)
-        except Exception as ex:
-            print(ex)
+    interpreter = Interpreter()
+    value = interpreter.visit(ast)
+    print(f"[MATH]: {value}")
 
 if __name__ == '__main__':
     main()
