@@ -1,3 +1,4 @@
+from interpreter import Interpreter
 from parser import Parser
 from tokenizer import Tokenizer
 
@@ -16,6 +17,9 @@ def main():
             if not ast:
                 continue
 
+            interpreter = Interpreter()
+            value = interpreter.visit(ast)
+            print(value)
         except Exception as ex:
             print(ex)
 

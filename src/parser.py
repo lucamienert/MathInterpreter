@@ -9,7 +9,7 @@ class Parser:
     def next_token(self):
         try:
             self.current = next(self.tokens)
-        except:
+        except StopIteration:
             self.current = None
 
     def parse(self):
@@ -30,7 +30,7 @@ class Parser:
             if self.current.type == Type.PLUS:
                 self.next_token()
                 result = AddNode(result, self.term())
-            if self.current.type == Type.MINUS:
+            elif self.current.type == Type.MINUS:
                 self.next_token()
                 result = SubNode(result, self.term())
 
@@ -43,7 +43,7 @@ class Parser:
             if self.current.type == Type.MULTIPLY:
                 self.next_token()
                 result = MulNode(result, self.factor())
-            if self.current.type == Type.DIVIDE:
+            elif self.current.type == Type.DIVIDE:
                 self.next_token()
                 result = DivNode(result, self.factor())
 

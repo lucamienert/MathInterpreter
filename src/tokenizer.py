@@ -8,32 +8,32 @@ class Tokenizer:
     def next_char(self):
         try:
             self.current = next(self.text)
-        except:
+        except StopIteration:
             self.current = None
 
     def generate_tokens(self):
         while self.current != None:
             if self.current in ' \n\t':
-                self.advance()
+                self.next_char()
             elif self.current == '.' or self.current in '0123456789':
                 yield self.generate_number()
             elif self.current == '+':
-                self.advance()
+                self.next_char()
                 yield Token(Type.PLUS)
             elif self.current == '-':
-                self.advance()
+                self.next_char()
                 yield Token(Type.MINUS)
             elif self.current == '*':
-                self.advance()
+                self.next_char()
                 yield Token(Type.MULTIPLY)
             elif self.current == '/':
-                self.advance()
+                self.next_char()
                 yield Token(Type.DIVIDE)
             elif self.current == '(':
-                self.advance()
+                self.next_char()
                 yield Token(Type.LPAREN)
             elif self.current == ')':
-                self.advance()
+                self.next_char()
                 yield Token(Type.RPAREN)
             else:
                 raise Exception(f"Illegal character '{self.current}'")
@@ -41,7 +41,7 @@ class Tokenizer:
     def generate_number(self):
         decimal_point_count = 0
         number_str = self.current
-        self.advance()
+        self.next_char()
 
         while self.current != None and (self.current == '.' or self.current in '0123456789'):
             if self.current == '.':
@@ -50,7 +50,7 @@ class Tokenizer:
                     break
 
             number_str += self.current
-            self.advance()
+            self.next_char()
 
         if number_str.startswith('.'):
             number_str = '0' + number_str
