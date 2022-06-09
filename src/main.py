@@ -1,3 +1,4 @@
+from parser import Parser
 from tokenizer import Tokenizer
 
 def main():
@@ -9,6 +10,11 @@ def main():
 
             tokenizer = Tokenizer(text)
             tokens = tokenizer.generate_tokens()
+
+            parser = Parser(tokens)
+            ast = parser.parse()
+            if not ast:
+                continue
 
         except Exception as ex:
             print(ex)
